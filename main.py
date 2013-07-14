@@ -2,8 +2,8 @@
 Audio example
 =============
 
-All the sounds are from the http://woolyss.com/chipmusic-samples.php
-"THE FREESOUND PROJECT", Under Creative Commons Sampling Plus 1.0 License.
+All the sounds are from the http://www.compositiontoday.com/sound_bank/alto_saxophone/alto_saxophone.asp
+"Composition:Today"
 
 '''
 
@@ -18,7 +18,7 @@ from kivy.core.audio import SoundLoader
 from kivy.properties import StringProperty, ObjectProperty
 from glob import glob
 from os.path import dirname, join, basename
-
+from kivy.logger import Logger
 
 class AudioButton(Button):
 
@@ -48,9 +48,9 @@ class AudioApp(App):
 
         root = AudioBackground(spacing=5)
         root.add_widget(Label(text='Audio example', font_size=32, size_hint_y=None))
-        for fn in glob(join(dirname(__file__), '*.wav')):
+        for fn in glob('./resources/instruments/alto_sax/*.wav'): # TODO: find a generic way to address sound directory
             btn = AudioButton(
-                text=basename(fn[:-4]).replace('_', ' '), filename=fn,
+                text=basename(fn[:-4]).split('_')[1], filename=fn,
                 size_hint=(None, None), halign='center',
                 size=(128, 128), text_size=(118, None))
             root.add_widget(btn)
