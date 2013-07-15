@@ -15,14 +15,24 @@
         size_hint: 1, None
         pos_hint: {'top': 1}
         height: 44
-        Image:
-            size_hint: None, None
-            size: 24, 24
-            source: 'data/logo/kivy-icon-24.png'
+        PlayButton:
+            text:"Play"
+            font_size: '25sp'
+            on_press: app.play_sequence()
+        NextButton:
+            text:"Next"
+            font_size: '25sp'
+            on_press: app.next_sequence()
+        AnswerButton:
+            text:"Answer"
+            font_size: '25sp'
+            on_press: app.answer_sequence(answer_label)
         Label:
             height: 24
             text_size: self.size
             color: (1, 1, 1, .8)
-            text: 'Kivy %s - Audio sample' % kivy.__version__
+            text: ''
             valign: 'middle'
+            id: answer_label
+
 
