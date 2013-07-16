@@ -24,16 +24,20 @@
             text: _('Next')
             font_size: '25sp'
             on_press: app.next_sequence()
-        AnswerButton:
-            text: _('Answer')
+        SolutionButton:
+            text: _('Solution')
             font_size: '25sp'
-            on_press: app.answer_sequence(answer_label)
+            on_press: app.solution_sequence(solution_label)
+        AnswerButton:
+            text: _('Answer') if app.state == 'normal' else _('Submit')
+            font_size: '25sp'
+            on_press: app.answer()
         Label:
             height: 24
             text_size: self.size
             color: (1, 1, 1, .8)
             text: ''
             valign: 'middle'
-            id: answer_label
+            id: solution_label
 
 

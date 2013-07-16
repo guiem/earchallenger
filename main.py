@@ -41,6 +41,10 @@ class AudioButton(Button):
             self.sound = SoundLoader.load(value)
 
     def on_press(self):
+        app_state = App.get_running_app().state
+        if app_state == 'answering':
+            self.background_color = [1,1,0,1]
+            self.text = self.text + '+'
         # stop the sound if it's currently playing
         if self.sound.status != 'stop':
             self.sound.stop()
@@ -52,8 +56,11 @@ class PlayButton(Button):
 class NextButton(Button):
     pass     
 
-class AnswerButton(Button):
+class SolutionButton(Button):
     pass     
+
+class AnswerButton(Button):
+    pass
 
 class AudioBackground(StackLayout):
     pass 
@@ -65,7 +72,12 @@ class AudioApp(App):
 
     buttons = ListProperty([])
     sequence = ListProperty([])
+    answer = ListProperty([])
+    state = StringProperty('normal')
     num_notes = 5 # TODO: make dropdown list 
+
+    def get_answer(self):
+        return self.answer
 
     def _create_sequence(self):
         seq = []
@@ -73,12 +85,19 @@ class AudioApp(App):
             seq.append(self.buttons[random.randint(0,len(self.buttons)-1)])
         return seq
 
-    def _print_answer(self):
-        answer = []
+    def _print_solution(self):
+        solution = []
         for note in self.sequence:
-            answer.append(note.text)
-        return (',').join(answer)
+            solution.append(note.text)
+        return (',').join(solution)
         
+    def answer(self):
+        Logger.debug('Guiem: entro amb estat ' + str(self.state))
+        if self.state == 'normal':
+            self.state = 'answering'
+        elif self.state == 'answering':
+            self.state = 'normal'
+
     def play_sequence(self):
         if not self.sequence:
             self.sequence = self._create_sequence()
@@ -91,8 +110,8 @@ class AudioApp(App):
         self.sequence = []
         self.play_sequence()
     
-    def answer_sequence(self,answer_label):
-        answer_label.text = self._print_answer()
+    def solution_sequence(self,solution_label):
+        solution_label.text = self._print_solution()
          
     def on_pause(self):
         return True
