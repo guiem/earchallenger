@@ -1,5 +1,6 @@
 #:kivy 1.0
 #:import kivy kivy
+#:import _ main._
 
 <AudioBackground>:
     canvas:
@@ -16,15 +17,15 @@
         pos_hint: {'top': 1}
         height: 44
         PlayButton:
-            text:"Play"
+            text: _('Play')
             font_size: '25sp'
             on_press: app.play_sequence()
         NextButton:
-            text:"Next"
+            text: _('Next')
             font_size: '25sp'
             on_press: app.next_sequence()
         AnswerButton:
-            text:"Answer"
+            text: _('Answer')
             font_size: '25sp'
             on_press: app.answer_sequence(answer_label)
         Label:
