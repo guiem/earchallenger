@@ -1,3 +1,4 @@
+#:import _ utils.i18n._
 
 <FullImage@Image>:
     canvas:
@@ -11,17 +12,15 @@
 <ChallengerScreen>:
     grid:grid
     BoxLayout:
-        pos_hint:{'center_x':0.5,'center_y':0.5}
-        size_hint_x: 0.4
-        size_hint_y: 0.6
+        pos_hint:{'top':1}
+        size_hint_y: 0.2
         orientation:'vertical'
-        Label:
-            text:'Tab your answer'
-            #text:_('Tab your answer')
         Button:
-            text: 'Play'
-            #text:_('Play')
+            text:_('Play')
             on_press:root.btnPlay()
+        Label:
+            text:_('Tap your answer')
     GridLayout:
+        pos_hint:{'top':0.8}
         id:grid
-        cols:3
+        cols:6

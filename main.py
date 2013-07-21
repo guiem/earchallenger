@@ -23,14 +23,12 @@ from kivy.logger import Logger
 import gettext
 import os
 from main_ctl import main_ctl
+from utils.i18n import _
 
 # Set up message catalog access
 dir = os.path.dirname(__file__)
 languagePath = os.path.join(dir, 'language')
 gettext.bindtextdomain('multilingual', languagePath)
-
-def _(*args):
-    return App.get_running_app().get_text(*args)
 
 class MyScreenManager(ScreenManager):
     all_widgets_disabled=BooleanProperty(False)
@@ -76,6 +74,7 @@ class EarChallengerApp(App):
 
     def build(self):
         self.set_language('en_US')
+        #self.set_language('es')
         self.root = MyScreenManager()
         main_ctl.setScreenManager(self.root)
         main_ctl.gotoChallenger()

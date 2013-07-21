@@ -45,7 +45,8 @@ class ChallengerScreen(Screen):
         Logger.debug('ChallengerScreen: into prepare')
         for fn in glob('resources/instruments/alto_sax/*.wav'): # TODO: find a generic way to address sound directory
             Logger.debug('ChallengerScreen: entro')
-            btn = AudioButton(text=basename(fn[:-4]).split('_')[1], filename=fn,size_hint=(None, None), halign='center',size=(128, 128), text_size=(118, None)) 
+            btn = AudioButton(text=basename(fn[:-4]).split('_')[1], filename=fn,size_hint=(1.0, None), halign='center', text_size=(118, None)) 
+            #size=(128, 128), it was in btn properties
             self.grid.add_widget(btn)
             self.buttons.append(btn)
 
