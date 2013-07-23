@@ -9,9 +9,11 @@ from kivy.logger import Logger
 from kivy.properties import StringProperty, ObjectProperty, ListProperty
 import random
 import time
+from utils.i18n import _
 
 class ChallengerCtl(AbstractController):
     screen_name='challenger'
+    state = StringProperty('normal')
     sequence = []
     
     def createScreens(self):
@@ -27,6 +29,25 @@ class ChallengerCtl(AbstractController):
         self.job_play_sequence = JobPlaySequence()
         self.job_play_sequence.controller=self
         self.job_play_sequence.start_job(buttons,num_notes,self.sequence)
+   
+    def answer(self):
+        btn_label = ''
+        if self.state == 'normal':
+            self.state = 'answering'
+            btn_label = _('Submit')
+        elif self.state == 'answering':
+            self.state = 'normal'
+            btn_label = _('Answer')
+        return btn_label
+     
+    def show_solution(self,solution):
+        res = _('Nothing has been played yet!')
+        if self.sequence:
+            solution = []
+            for note in self.sequence:
+                solution.append(note.text)
+            res = (',').join(solution)
+        return res
          
     def prepareScreen(self):
         screen =self.screen_manager.get_screen(self.screen_name)

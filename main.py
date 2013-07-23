@@ -42,32 +42,6 @@ class MyScreenManager(ScreenManager):
 class EarChallengerApp(App):
     def get_answer(self):
         return self.answer
-
-    def _create_sequence(self):
-        seq = []
-        for i in range(self.num_notes):
-            seq.append(self.buttons[random.randint(0,len(self.buttons)-1)])
-        return seq
-
-    def _print_solution(self):
-        solution = []
-        for note in self.sequence:
-            solution.append(note.text)
-        return (',').join(solution)
-        
-    def answer(self):
-        Logger.debug('Guiem: entro amb estat ' + str(self.state))
-        if self.state == 'normal':
-            self.state = 'answering'
-        elif self.state == 'answering':
-            self.state = 'normal'
-    
-    def next_sequence(self):
-        self.sequence = []
-        self.play_sequence()
-    
-    def solution_sequence(self,solution_label):
-        solution_label.text = self._print_solution()
          
     def on_pause(self):
         return True

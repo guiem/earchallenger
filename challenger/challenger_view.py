@@ -34,12 +34,12 @@ class AudioButton(Button):
 
 class ChallengerScreen(Screen):
     grid = ObjectProperty()
-    feedback_texti = StringProperty('')
     buttons = ListProperty([])
     answer = ListProperty([])
-    state = StringProperty('normal')
     num_notes = 5 # TODO: make dropdown list
-    
+    solution = StringProperty('')
+    btn_answer_label = StringProperty('Answer')
+     
     def prepare(self):
         Logger.debug('ChallengerScreen: into prepare')
         for fn in glob('resources/instruments/alto_sax/*.wav'): # TODO: find a generic way to address sound directory
@@ -53,5 +53,12 @@ class ChallengerScreen(Screen):
     
     def btn_next(self):
         challenger_ctl.play_next(self.buttons,self.num_notes)
+    
+    def btn_answer(self):
+        state = challenger_ctl.answer()
+        self.btn_answer_label = state
+         
+    def btn_solution(self):
+        self.solution = challenger_ctl.show_solution(self.solution)
 
 from challenger.challenger_ctl import challenger_ctl

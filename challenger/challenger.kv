@@ -21,10 +21,19 @@
         Button:
             text:_('Next')
             on_press:root.btn_next()
+        Button:
+            text:root.btn_answer_label
+            on_press:root.btn_answer()
+        Button:
+            text:_('Solution')
+            on_press:root.btn_solution()
     BoxLayout:
         pos_hint:{'top':0.8}
         size_hint_y: 0.2
-        orientation:'horizontal'
+        orientation:'vertical'
+        Label:
+            id:solution
+            text:root.solution
         Label:
             text:_('Tap your answer')
     GridLayout:
