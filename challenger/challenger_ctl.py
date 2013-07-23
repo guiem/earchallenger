@@ -12,24 +12,30 @@ import time
 
 class ChallengerCtl(AbstractController):
     screen_name='challenger'
-      
-    def play_sequence(self,buttons,num_notes,sequence):
-        self.job_play_sequence = JobPlaySequence()
-        self.job_play_sequence.controller=self
-        self.job_play_sequence.start_job(buttons,num_notes,sequence)
+    sequence = []
     
     def createScreens(self):
-        self.screen_manager.add_widget(ChallengerScreen(name=self.screen_name))
+        self.screen_manager.add_widget(ChallengerScreen(name=self.screen_name, controller = self))
+    
+    def play_sequence(self,buttons,num_notes):
+        self.job_play_sequence = JobPlaySequence()
+        self.job_play_sequence.controller=self
+        self.job_play_sequence.start_job(buttons,num_notes,self.sequence)
 
+    def play_next(self,buttons,num_notes):
+        self.sequence = []
+        self.job_play_sequence = JobPlaySequence()
+        self.job_play_sequence.controller=self
+        self.job_play_sequence.start_job(buttons,num_notes,self.sequence)
+         
     def prepareScreen(self):
         screen =self.screen_manager.get_screen(self.screen_name)
         self.get_screen().prepare()
 
     def on_job_finished_play_sequence(self,sender):
         Logger.debug('ChallengerCtl: on_job_finished')
-        #self.user=self.job_login.user
-        #self.user_data=self.job_login.user_data
-        #menu_ctl.showScreen()
+        self.sequence = self.job_play_sequence.sequence
+    
     def on_job_error_play_sequence(self,sender):
         Logger.debug('ChallengerCtl: on_job_error')
     
@@ -52,7 +58,8 @@ class ChallengerCtl(AbstractController):
 
 class JobPlaySequence(Job):
     job_id='_play_sequence'
-    
+    sequence = []
+     
     def _create_sequence(self,buttons,num_notes):
         seq = []
         for i in range(num_notes):
@@ -65,8 +72,10 @@ class JobPlaySequence(Job):
             sequence = self._create_sequence(buttons,num_notes)
         for btn in sequence:
             btn.sound.play()
-            time.sleep(1) # TODO: check if there is a proper way to pause between sounds. Moreover: make speed adjustable by bar
+            time.sleep(1) # TODO: Moreover: make speed adjustable by bar
             btn.sound.stop()
+        self.sequence = sequence
+        self.job_state  = 'finished'
 
 challenger_ctl=ChallengerCtl()
 

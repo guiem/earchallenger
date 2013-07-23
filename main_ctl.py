@@ -13,6 +13,7 @@ class MainCtl(AbstractController):
         for c in self.controllers:
             c.set_screen_manager(manager)
             c.createScreens()
+    
     def gotoChallenger(self):
         challenger_ctl.showScreen()
 

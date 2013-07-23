@@ -3,6 +3,8 @@ from kivy.event import EventDispatcher
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
+from utils.i18n import _
+from utils.info_ctl import info_ctl
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.properties import StringProperty
@@ -41,7 +43,6 @@ class Job(EventDispatcher,Thread):
         self.str_feedback=""
 
     def start_job(self,*args,**kwargs):
-        print 'start_job'
         self.args_job = args
         self.kwargs_job = kwargs
         self.dispatch('on_job_init')
@@ -50,7 +51,6 @@ class Job(EventDispatcher,Thread):
         Clock.schedule_once(self.check_finished,0.5)
     
     def run(self):
-        print 'run'
         self.do_job(*self.args_job,**self.kwargs_job)
 
 
@@ -96,7 +96,6 @@ class CargandoLayout(BoxLayout):
 
 class JobLoading(Job): 
     def on_feedback_init(self,*largs):
-        print "feedback_init"
         self.e=CargandoLayout()
         self.e.lbl=_('Cargando')
         self.popup = Popup(title=_('Cargando'),
@@ -108,7 +107,6 @@ class JobLoading(Job):
             self.e.lbl=self.e.lbl+'. '
         else:
             self.e.lbl = _('Cargando')
-        print "feedback_loop"
 
     def on_job_init(self,*largs):
         self.controller.screen_manager.all_widgets_disabled=True

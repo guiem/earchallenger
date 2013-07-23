@@ -37,7 +37,6 @@ class ChallengerScreen(Screen):
     feedback_texti = StringProperty('')
     buttons = ListProperty([])
     answer = ListProperty([])
-    sequence = ListProperty([]) # TODO where does it should be placed?
     state = StringProperty('normal')
     num_notes = 5 # TODO: make dropdown list
     
@@ -46,11 +45,13 @@ class ChallengerScreen(Screen):
         for fn in glob('resources/instruments/alto_sax/*.wav'): # TODO: find a generic way to address sound directory
             Logger.debug('ChallengerScreen: entro')
             btn = AudioButton(text=basename(fn[:-4]).split('_')[1], filename=fn,size_hint=(1.0, None), halign='center', text_size=(118, None)) 
-            #size=(128, 128), it was in btn properties
             self.grid.add_widget(btn)
             self.buttons.append(btn)
 
-    def btnPlay(self):
-        challenger_ctl.play_sequence(self.buttons,self.num_notes,self.sequence)
+    def btn_play(self):
+        challenger_ctl.play_sequence(self.buttons,self.num_notes)
+    
+    def btn_next(self):
+        challenger_ctl.play_next(self.buttons,self.num_notes)
 
 from challenger.challenger_ctl import challenger_ctl

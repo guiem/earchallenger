@@ -14,13 +14,20 @@
     BoxLayout:
         pos_hint:{'top':1}
         size_hint_y: 0.2
-        orientation:'vertical'
+        orientation:'horizontal'
         Button:
             text:_('Play')
-            on_press:root.btnPlay()
+            on_press:root.btn_play()
+        Button:
+            text:_('Next')
+            on_press:root.btn_next()
+    BoxLayout:
+        pos_hint:{'top':0.8}
+        size_hint_y: 0.2
+        orientation:'horizontal'
         Label:
             text:_('Tap your answer')
     GridLayout:
-        pos_hint:{'top':0.8}
         id:grid
+        pos_hint:{'top':0.6}
         cols:6
