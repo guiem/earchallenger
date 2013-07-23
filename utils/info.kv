@@ -1,0 +1,31 @@
+
+<ErrorLayout@BoxLayout>:
+    lbl:lbl
+    btn:btn
+    trace:trace
+    sc:sc
+    BoxLayout:
+        orientation:'vertical'
+        Label:
+            id:lbl
+        ScrollView:
+            id: sc
+            size_hint_y: None
+            height: 0
+            TextInput:
+                id:trace
+                size_hint: (1,None)
+                height: max((len(self._lines)+1)*self.line_height,sc.height)
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 50
+            Button:
+                size_hint_x:0.7
+                id:btn
+            Button:
+                text:'Ver error'
+                size_hint:(0.3,1)
+                id:btn_trace
+                on_press: root.show_hide_trace() 
+                
