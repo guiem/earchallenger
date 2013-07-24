@@ -15,39 +15,74 @@ class ChallengerCtl(AbstractController):
     screen_name='challenger'
     state = StringProperty('normal')
     sequence = []
+    submitted = []
+    sol_count_notes = 0
     
+    def _reset(self):
+        self.sequence = []
+        self.submitted = []
+        self.sol_count_notes = 0
+    
+    def _check_answer(self):
+        result = True
+        if len(self.sequence) != len(self.submitted):
+            result = False
+        else:
+            for i in range(0,len(self.sequence)-1):
+                if self.sequence[i] != self.submitted[i]:
+                    result = False
+                    break
+        return result
+     
     def createScreens(self):
         self.screen_manager.add_widget(ChallengerScreen(name=self.screen_name, controller = self))
     
+    def press_audio_btn(self,button):
+        Logger.debug(_('ChallengerCtl: press_audio_btn'))
+        if self.state == 'answering':
+            self.submitted.append(button)
+            self.sol_count_notes += 1
+            button.background_color = [1,1,0,1]
+            button.text = button.text + '-' + str(self.sol_count_notes)
+        if button.sound.status != 'stop':
+            button.sound.stop()
+        button.sound.play()
+     
     def play_sequence(self,buttons,num_notes):
         self.job_play_sequence = JobPlaySequence()
         self.job_play_sequence.controller=self
         self.job_play_sequence.start_job(buttons,num_notes,self.sequence)
 
     def play_next(self,buttons,num_notes):
-        self.sequence = []
+        self._reset()
         self.job_play_sequence = JobPlaySequence()
         self.job_play_sequence.controller=self
         self.job_play_sequence.start_job(buttons,num_notes,self.sequence)
-   
+     
     def answer(self):
         btn_label = ''
+        feedback = ''
         if self.state == 'normal':
             self.state = 'answering'
             btn_label = _('Submit')
         elif self.state == 'answering':
             self.state = 'normal'
             btn_label = _('Answer')
-        return btn_label
+            correct = self._check_answer()
+            if correct:
+                feedback = _('You are right!')
+            else:
+                feedback = _('Sorry, you are wrong.')
+        return btn_label,feedback
      
     def show_solution(self,solution):
-        res = _('Nothing has been played yet!')
+        feedback = _('Nothing has been played yet!')
         if self.sequence:
             solution = []
             for note in self.sequence:
                 solution.append(note.text)
-            res = (',').join(solution)
-        return res
+            feedback = (',').join(solution)
+        return feedback
          
     def prepareScreen(self):
         screen =self.screen_manager.get_screen(self.screen_name)
@@ -60,7 +95,7 @@ class ChallengerCtl(AbstractController):
     def on_job_error_play_sequence(self,sender):
         Logger.debug('ChallengerCtl: on_job_error')
     
-    def on_feedback_init_login(self,sender):
+    def on_feedback_init_play_sequence(self,sender):
         Logger.debug('ChallengerCtl: on_feedback_init')
 
     def on_job_init_play_sequence(self,sender):

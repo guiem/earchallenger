@@ -22,15 +22,7 @@ class AudioButton(Button):
             self.sound = SoundLoader.load(value)
 
     def on_press(self):
-        Logger.debug('AudioButton: press, status: '+str(self.sound.status))
-        #app_state = App.get_running_app().state
-        #if app_state == 'answering':
-        #    self.background_color = [1,1,0,1]
-        #    self.text = self.text + '+'
-        # stop the sound if it's currently playing
-        if self.sound.status != 'stop':
-            self.sound.stop()
-        self.sound.play()
+        challenger_ctl.press_audio_btn(self)
 
 class ChallengerScreen(Screen):
     grid = ObjectProperty()
@@ -44,7 +36,7 @@ class ChallengerScreen(Screen):
         Logger.debug('ChallengerScreen: into prepare')
         for fn in glob('resources/instruments/alto_sax/*.wav'): # TODO: find a generic way to address sound directory
             Logger.debug('ChallengerScreen: entro')
-            btn = AudioButton(text=basename(fn[:-4]).split('_')[1], filename=fn,size_hint=(1.0, None), halign='center', text_size=(118, None)) 
+            btn = AudioButton(text=basename(fn[:-4]).split('_')[1], filename=fn,size_hint=(1.0, None), halign='center', text_size=(None, None)) 
             self.grid.add_widget(btn)
             self.buttons.append(btn)
 
@@ -55,8 +47,9 @@ class ChallengerScreen(Screen):
         challenger_ctl.play_next(self.buttons,self.num_notes)
     
     def btn_answer(self):
-        state = challenger_ctl.answer()
+        state,feedback = challenger_ctl.answer()
         self.btn_answer_label = state
+        self.solution = feedback
          
     def btn_solution(self):
         self.solution = challenger_ctl.show_solution(self.solution)
