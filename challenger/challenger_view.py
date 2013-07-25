@@ -45,7 +45,7 @@ class ChallengerScreen(Screen):
     
     def btn_next(self):
         challenger_ctl.play_next(self.buttons,self.num_notes)
-    
+         
     def btn_answer(self):
         state,feedback = challenger_ctl.answer()
         self.btn_answer_label = state

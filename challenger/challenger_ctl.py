@@ -18,10 +18,17 @@ class ChallengerCtl(AbstractController):
     submitted = []
     sol_count_notes = 0
     
-    def _reset(self):
+    def _clear_buttons(self,buttons):
+        for button in buttons:
+            button.background_color = [1, 1, 1, 1]
+            button.text = button.text.split('-')[0]
+
+    def _reset(self,buttons):
         self.sequence = []
         self.submitted = []
         self.sol_count_notes = 0
+        self.state = 'normal' # TODO: bind this?
+        self._clear_buttons(buttons)
     
     def _check_answer(self):
         result = True
@@ -54,7 +61,7 @@ class ChallengerCtl(AbstractController):
         self.job_play_sequence.start_job(buttons,num_notes,self.sequence)
 
     def play_next(self,buttons,num_notes):
-        self._reset()
+        self._reset(buttons)
         self.job_play_sequence = JobPlaySequence()
         self.job_play_sequence.controller=self
         self.job_play_sequence.start_job(buttons,num_notes,self.sequence)
