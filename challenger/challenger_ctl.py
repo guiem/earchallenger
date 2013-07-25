@@ -100,11 +100,11 @@ class ChallengerCtl(AbstractController):
 
     def on_job_init_play_sequence(self,sender):
         Logger.debug('ChallengerCtl: on_job_init')
-        #self.screen_manager.all_widgets_disabled=True
+        self.screen_manager.all_widgets_disabled=True
     
     def on_job_finally_play_sequence(self,sender):
         Logger.debug('ChallengerCtl: on_feedback_finally')
-        #self.screen_manager.all_widgets_disabled=False
+        self.screen_manager.all_widgets_disabled=False
     
     def on_feedback_loop_play_sequence(self,sender):
         Logger.debug('ChallengerCtl: feedback_loop')
@@ -132,6 +132,6 @@ class JobPlaySequence(Job):
             btn.sound.stop()
         self.sequence = sequence
         self.job_state  = 'finished'
-
+    
 challenger_ctl=ChallengerCtl()
 

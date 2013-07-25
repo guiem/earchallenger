@@ -31,7 +31,7 @@ languagePath = os.path.join(dir, 'language')
 gettext.bindtextdomain('multilingual', languagePath)
 
 class MyScreenManager(ScreenManager):
-    all_widgets_disabled=BooleanProperty(False)
+    all_widgets_disabled = BooleanProperty(False)
 
     def dispatch(self,*args,**kwargs):
         if not self.all_widgets_disabled:
