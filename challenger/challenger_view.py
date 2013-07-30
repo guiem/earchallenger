@@ -9,6 +9,7 @@ from kivy.uix.button import Button
 from kivy.logger import Logger
 from glob import glob
 from os.path import dirname, join, basename
+from utils.i18n import _
 
 Builder.load_file('challenger/challenger.kv')
 
@@ -36,7 +37,7 @@ class ChallengerScreen(Screen):
         Logger.debug('ChallengerScreen: into prepare')
         for fn in glob('resources/instruments/alto_sax/*.wav'): # TODO: find a generic way to address sound directory
             Logger.debug('ChallengerScreen: entro')
-            btn = AudioButton(text=basename(fn[:-4]).split('_')[1], filename=fn,size_hint=(1.0, None), halign='center', text_size=(None, None)) 
+            btn = AudioButton(text=basename(fn[:-4]).split('_')[1], filename=fn,size_hint=(1.0,1.0), halign='center', text_size=(None, None)) 
             self.grid.add_widget(btn)
             self.buttons.append(btn)
 
@@ -46,12 +47,19 @@ class ChallengerScreen(Screen):
     def btn_next(self):
         challenger_ctl.play_next(self.buttons,self.num_notes)
          
-    def btn_answer(self):
+    def btn_answer(self,btn_cancel):
         state,feedback = challenger_ctl.answer()
         self.btn_answer_label = state
         self.solution = feedback
+        if state == _('Submit'):
+            btn_cancel.active = True
+        elif state == _('Answer'):
+            btn_cancel.active = False
          
     def btn_solution(self):
         self.solution = challenger_ctl.show_solution(self.solution)
+    
+    def btn_cancel(self):
+        challenger_ctl.cancel(self.buttons)
 
 from challenger.challenger_ctl import challenger_ctl

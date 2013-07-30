@@ -23,7 +23,7 @@ class ChallengerCtl(AbstractController):
             button.background_color = [1, 1, 1, 1]
             button.text = button.text.split('-')[0]
 
-    def _reset(self,buttons):
+    def _reset_all(self,buttons):
         self.sequence = []
         self.submitted = []
         self.sol_count_notes = 0
@@ -32,7 +32,7 @@ class ChallengerCtl(AbstractController):
     
     def _check_answer(self):
         result = True
-        if len(self.sequence) != len(self.submitted):
+        if len(self.sequence) != len(self.submitted) or not self.sequence:
             result = False
         else:
             for i in range(0,len(self.sequence)-1):
@@ -61,10 +61,15 @@ class ChallengerCtl(AbstractController):
         self.job_play_sequence.start_job(buttons,num_notes,self.sequence)
 
     def play_next(self,buttons,num_notes):
-        self._reset(buttons)
+        self._reset_all(buttons)
         self.job_play_sequence = JobPlaySequence()
         self.job_play_sequence.controller=self
         self.job_play_sequence.start_job(buttons,num_notes,self.sequence)
+    
+    def cancel(self,buttons):
+        self._clear_buttons(buttons)
+        self.submitted = []
+        self.sol_count_notes = 0
      
     def answer(self):
         btn_label = ''
@@ -75,11 +80,14 @@ class ChallengerCtl(AbstractController):
         elif self.state == 'answering':
             self.state = 'normal'
             btn_label = _('Answer')
-            correct = self._check_answer()
-            if correct:
-                feedback = _('You are right!')
+            if self.sequence:
+                correct = self._check_answer()
+                if correct:
+                    feedback = _('You are right!')
+                else:
+                    feedback = _('Sorry, you are wrong.')
             else:
-                feedback = _('Sorry, you are wrong.')
+                feedback = _('Sorry, you did not play any sequence.')
         return btn_label,feedback
      
     def show_solution(self,solution):

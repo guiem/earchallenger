@@ -1,4 +1,5 @@
 #:import _ utils.i18n._
+#:import ButtonWithDisable utils.button_with_disable.ButtonWithDisable
 
 <FullImage@Image>:
     canvas:
@@ -13,7 +14,7 @@
     grid:grid
     BoxLayout:
         pos_hint:{'top':1}
-        size_hint_y: 0.2
+        size_hint_y: 0.1
         orientation:'horizontal'
         Button:
             text:_('Play')
@@ -23,12 +24,17 @@
             on_press:root.btn_next()
         Button:
             text:root.btn_answer_label
-            on_press:root.btn_answer()
+            on_press:root.btn_answer(btn_cancel)
         Button:
             text:_('Solution')
             on_press:root.btn_solution()
+        ButtonWithDisable:
+            id:btn_cancel
+            active:False
+            text:_('Cancel')
+            on_press:root.btn_cancel()
     BoxLayout:
-        pos_hint:{'top':0.8}
+        pos_hint:{'top':0.9}
         size_hint_y: 0.2
         orientation:'vertical'
         Label:
@@ -38,9 +44,11 @@
             text:_('Tap your answer')
     GridLayout:
         id:grid
-        pos_hint:{'top':0.6}
-        cols:6
-    GridLayout:
-        id:grid_solution
-        pos_hint:{'top':0.4}
-        cols:6
+        pos_hint:{'top':0.7}
+        size_hint_y: 0.7
+        size_hint_x: 1.0
+        cols:8
+    #GridLayout:
+    #    id:grid_solution
+    #    pos_hint:{'top':0.5}
+    #    cols:6
