@@ -28,6 +28,9 @@
         Button:
             text:_('Solution')
             on_press:root.btn_solution()
+        Button:
+            text:_('Hint')
+            on_press:root.btn_hints()
         ButtonWithDisable:
             id:btn_cancel
             active:False
@@ -37,17 +40,42 @@
         pos_hint:{'top':0.9}
         size_hint_y: 0.2
         orientation:'vertical'
-        Label:
-            id:solution
-            text:root.solution
+        BoxLayout:
+            orientation:'horizontal'
+            Label:
+                id:solution
+                text:root.solution
         Label:
             text:_('Tap your answer')
     GridLayout:
         id:grid
         pos_hint:{'top':0.7}
-        size_hint_y: 0.7
+        size_hint_y: 0.6
         size_hint_x: 1.0
         cols:8
+    BoxLayout: 
+        pos_hint:{'top':0.1}
+        size_hint_y: 0.1
+        orientation:'horizontal'
+        Label:
+            halign:'left'
+            size_hint_x: 0.15
+            text:_('Played times:')
+        Label:
+            halign:'left'
+            size_hint_x: 0.05
+            text:str(root.played_times)
+        Label:
+            halign:'left'
+            size_hint_x: 0.15
+            text:_('Hints:')
+        Label:
+            halign:'left'
+            size_hint_x: 0.05
+            text:str(root.hints)
+        Label:
+            size_hint_x: 0.60
+            
     #GridLayout:
     #    id:grid_solution
     #    pos_hint:{'top':0.5}

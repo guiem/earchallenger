@@ -3,7 +3,7 @@
 
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
-from kivy.properties import StringProperty, ObjectProperty, ListProperty
+from kivy.properties import StringProperty, ObjectProperty, ListProperty, NumericProperty
 from kivy.core.audio import SoundLoader
 from kivy.uix.button import Button
 from kivy.logger import Logger
@@ -32,7 +32,9 @@ class ChallengerScreen(Screen):
     num_notes = 5 # TODO: make dropdown list
     solution = StringProperty('')
     btn_answer_label = StringProperty('Answer')
-     
+    played_times = NumericProperty(0)
+    hints = NumericProperty(0)
+
     def prepare(self):
         Logger.debug('ChallengerScreen: into prepare')
         for fn in glob('resources/instruments/alto_sax/*.wav'): # TODO: find a generic way to address sound directory
@@ -43,9 +45,13 @@ class ChallengerScreen(Screen):
 
     def btn_play(self):
         challenger_ctl.play_sequence(self.buttons,self.num_notes)
-    
+        self.played_times += 1
+
     def btn_next(self):
         challenger_ctl.play_next(self.buttons,self.num_notes)
+        self.played_times = 1
+        self.hints = 0
+        self.solution = ''
          
     def btn_answer(self,btn_cancel):
         state,feedback = challenger_ctl.answer()
@@ -57,8 +63,12 @@ class ChallengerScreen(Screen):
             btn_cancel.active = False
          
     def btn_solution(self):
-        self.solution = challenger_ctl.show_solution(self.solution)
+        self.solution,self.hints = challenger_ctl.show_solution(self.num_notes-1)
     
+    def btn_hints(self):
+        if self.hints != self.num_notes:
+            self.solution,self.hints = challenger_ctl.show_solution(self.hints)
+         
     def btn_cancel(self):
         challenger_ctl.cancel(self.buttons)
 
