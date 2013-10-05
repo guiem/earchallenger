@@ -1,0 +1,18 @@
+#:import _ utils.i18n._
+
+<FullImage@Image>:
+    canvas:
+        Color:
+            rgb: (1, 1, 1)
+        Rectangle:
+            texture: self.texture
+            size: self.size
+            pos: self.pos
+
+<SettingsScreen>:
+    Button:
+        text:_('Save')
+        on_press:root.btn_save()
+    Button:
+        text:_('Back')
+        on_press:root.btn_back()

@@ -10,6 +10,7 @@ from kivy.logger import Logger
 from glob import glob
 from os.path import dirname, join, basename
 from utils.i18n import _
+from settings.settings_ctl import settings_ctl
 
 Builder.load_file('challenger/challenger.kv')
 
@@ -71,5 +72,8 @@ class ChallengerScreen(Screen):
          
     def btn_cancel(self):
         challenger_ctl.cancel(self.buttons)
+
+    def btn_settings(self):
+        settings_ctl.showScreen()
 
 from challenger.challenger_ctl import challenger_ctl
