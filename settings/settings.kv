@@ -10,9 +10,11 @@
             pos: self.pos
 
 <SettingsScreen>:
-    Button:
-        text:_('Save')
-        on_press:root.btn_save()
-    Button:
-        text:_('Back')
-        on_press:root.btn_back()
+    BoxLayout:
+        orientation:'vertical'
+        Button:
+            text:_('Save')
+            on_press:root.btn_save()
+        Button:
+            text:_('Back')
+            on_press:root.btn_back()

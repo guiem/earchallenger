@@ -10,16 +10,16 @@ from kivy.logger import Logger
 from glob import glob
 from os.path import dirname, join, basename
 from utils.i18n import _
-from challenger.challenger_ctl import challenger_ctl
 
 Builder.load_file('settings/settings.kv')
 
 class SettingsScreen(Screen):
 
-    def button_back(self):
+    def btn_back(self):
+        from challenger.challenger_ctl import challenger_ctl
         challenger_ctl.showScreen()
 
-    def button_save(self):
+    def btn_save(self):
         pass
 
 from settings.settings_ctl import settings_ctl

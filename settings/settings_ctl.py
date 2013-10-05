@@ -9,6 +9,7 @@ from kivy.properties import StringProperty, ObjectProperty, ListProperty
 import random
 import time
 from utils.i18n import _
+from settings.settings_view import SettingsScreen
 
 class SettingsCtl(AbstractController):
     screen_name='settings'
@@ -18,7 +19,6 @@ class SettingsCtl(AbstractController):
          
     def prepareScreen(self):
         screen =self.screen_manager.get_screen(self.screen_name)
-        self.get_screen().prepare()
     
 settings_ctl = SettingsCtl()
 

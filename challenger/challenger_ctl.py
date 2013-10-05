@@ -105,8 +105,9 @@ class ChallengerCtl(AbstractController):
         return feedback,num_hints
          
     def prepareScreen(self):
-        screen =self.screen_manager.get_screen(self.screen_name)
-        self.get_screen().prepare()
+        if not hasattr(self, 'screen'):
+            self.screen = self.screen_manager.get_screen(self.screen_name)
+            self.get_screen().prepare()
 
     def on_job_finished_play_sequence(self,sender):
         Logger.debug('ChallengerCtl: on_job_finished')
