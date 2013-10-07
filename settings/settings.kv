@@ -12,6 +12,14 @@
 <SettingsScreen>:
     BoxLayout:
         orientation:'vertical'
+        Slider:
+            id: num_notes_slider
+            min:1
+            max:10
+            orientation:'horizontal'
+            value:5
+        Label:
+            text: str(num_notes_slider.value)
         Button:
             text:_('Save')
             on_press:root.btn_save()
