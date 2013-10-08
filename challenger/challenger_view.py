@@ -30,7 +30,6 @@ class ChallengerScreen(Screen):
     grid = ObjectProperty()
     buttons = ListProperty([])
     answer = ListProperty([])
-    num_notes = 5 # TODO: make dropdown list
     solution = StringProperty('')
     btn_answer_label = StringProperty('Answer')
     played_times = NumericProperty(0)
@@ -45,11 +44,11 @@ class ChallengerScreen(Screen):
             self.buttons.append(btn)
 
     def btn_play(self):
-        challenger_ctl.play_sequence(self.buttons,self.num_notes)
+        challenger_ctl.play_sequence(self.buttons)
         self.played_times += 1
 
     def btn_next(self):
-        challenger_ctl.play_next(self.buttons,self.num_notes)
+        challenger_ctl.play_next(self.buttons)
         self.played_times = 1
         self.hints = 0
         self.solution = ''
@@ -64,11 +63,10 @@ class ChallengerScreen(Screen):
             btn_cancel.active = False
          
     def btn_solution(self):
-        self.solution,self.hints = challenger_ctl.show_solution(self.num_notes-1)
+        self.solution,self.hints = challenger_ctl.show_solution()
     
     def btn_hints(self):
-        if self.hints != self.num_notes:
-            self.solution,self.hints = challenger_ctl.show_solution(self.hints)
+        self.solution,self.hints = challenger_ctl.show_solution(self.hints)
          
     def btn_cancel(self):
         challenger_ctl.cancel(self.buttons)

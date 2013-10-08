@@ -14,12 +14,14 @@ from utils.i18n import _
 Builder.load_file('settings/settings.kv')
 
 class SettingsScreen(Screen):
+    num_notes_slider = ObjectProperty(None)
 
     def btn_back(self):
         from challenger.challenger_ctl import challenger_ctl
         challenger_ctl.showScreen()
 
     def btn_save(self):
-        pass
+        from challenger.challenger_ctl import challenger_ctl
+        challenger_ctl.change_num_notes(int(self.num_notes_slider.value))
 
 from settings.settings_ctl import settings_ctl

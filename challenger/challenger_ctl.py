@@ -6,7 +6,7 @@ from utils.abstract_ctl import AbstractController
 from challenger.challenger_view import ChallengerScreen
 import traceback
 from kivy.logger import Logger
-from kivy.properties import StringProperty, ObjectProperty, ListProperty
+from kivy.properties import StringProperty, ObjectProperty, ListProperty, NumericProperty
 import random
 import time
 from utils.i18n import _
@@ -17,6 +17,12 @@ class ChallengerCtl(AbstractController):
     sequence = []
     submitted = []
     sol_count_notes = 0
+    num_notes = NumericProperty(5)
+    
+    def change_num_notes(self, num_notes):
+        if num_notes != self.num_notes:
+            self.num_notes = num_notes
+            self.sequence = []
     
     def _clear_buttons(self,buttons):
         for button in buttons:
@@ -55,16 +61,16 @@ class ChallengerCtl(AbstractController):
             button.sound.stop()
         button.sound.play()
      
-    def play_sequence(self,buttons,num_notes):
+    def play_sequence(self,buttons):
         self.job_play_sequence = JobPlaySequence()
         self.job_play_sequence.controller=self
-        self.job_play_sequence.start_job(buttons,num_notes,self.sequence)
+        self.job_play_sequence.start_job(buttons,self.num_notes,self.sequence)
 
-    def play_next(self,buttons,num_notes):
+    def play_next(self,buttons):
         self._reset_all(buttons)
         self.job_play_sequence = JobPlaySequence()
         self.job_play_sequence.controller=self
-        self.job_play_sequence.start_job(buttons,num_notes,self.sequence)
+        self.job_play_sequence.start_job(buttons,self.num_notes,self.sequence)
     
     def cancel(self,buttons):
         self._clear_buttons(buttons)
@@ -90,7 +96,9 @@ class ChallengerCtl(AbstractController):
                 feedback = _('Sorry, you did not play any sequence.')
         return btn_label,feedback
      
-    def show_solution(self,num_hints):
+    def show_solution(self,num_hints = False):
+        if not num_hints and num_hints != 0:
+            num_hints = self.num_notes - 1
         num_to_show = num_hints + 1
         Logger.debug('ShowSolution: num_to_show '+str(num_to_show)+' len_seq '+str(len(self.sequence)))
         if self.sequence and num_to_show <= len(self.sequence):
@@ -103,7 +111,7 @@ class ChallengerCtl(AbstractController):
             feedback = _('Nothing has been played yet!')
             num_hints = 0
         return feedback,num_hints
-         
+    
     def prepareScreen(self):
         if not hasattr(self, 'screen'):
             self.screen = self.screen_manager.get_screen(self.screen_name)
