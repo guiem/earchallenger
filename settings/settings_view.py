@@ -21,7 +21,6 @@ class SettingsScreen(Screen):
         challenger_ctl.showScreen()
 
     def btn_save(self):
-        from challenger.challenger_ctl import challenger_ctl
-        challenger_ctl.change_num_notes(int(self.num_notes_slider.value))
+        settings_ctl.store_all(int(self.num_notes_slider.value))
 
 from settings.settings_ctl import settings_ctl

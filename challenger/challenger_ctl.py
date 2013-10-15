@@ -116,6 +116,11 @@ class ChallengerCtl(AbstractController):
         if not hasattr(self, 'screen'):
             self.screen = self.screen_manager.get_screen(self.screen_name)
             self.get_screen().prepare()
+        # TODO: check if right place to do this
+        from kivy.storage.jsonstore import JsonStore
+        store = JsonStore('settings.json')
+        if store:
+            self.change_num_notes(store.get('num_notes')['value'])
 
     def on_job_finished_play_sequence(self,sender):
         Logger.debug('ChallengerCtl: on_job_finished')
