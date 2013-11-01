@@ -66,11 +66,15 @@ class ChallengerCtl(AbstractController):
         self.job_play_sequence = JobPlaySequence()
         self.job_play_sequence.controller=self
         self.job_play_sequence.start_job(buttons,self.num_notes,self.sequence)
+        self.screen.played_times += 1
 
-    def play_next(self,buttons,hints,played_times):
+    def play_next(self,buttons):
         dbmgr = DatabaseManager("earchallenger.db")
         dbmgr.query('''INSERT INTO stats(num_hints, num_notes, num_trials)
-                    VALUES(%s,%s,%s)''' % (str(hints),str(self.num_notes), str(played_times)))
+                    VALUES(%s,%s,%s)''' % (str(self.screen.hints),str(self.num_notes), str(self.screen.played_times)))
+        self.screen.played_times = 1
+        self.screen.hints = 0
+        self.screen.solution = ''
         self._reset_all(buttons)
         self.job_play_sequence = JobPlaySequence()
         self.job_play_sequence.controller=self

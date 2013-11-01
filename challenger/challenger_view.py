@@ -46,16 +46,12 @@ class ChallengerScreen(Screen):
 
     def btn_play(self):
         challenger_ctl.play_sequence(self.buttons)
-        self.played_times += 1
 
     def btn_next(self):
-        challenger_ctl.play_next(self.buttons, self.hints,self.played_times)
-        # TODO: check if there is a correct way to handle this variables in controller
-        self.played_times = 1
-        self.hints = 0
-        self.solution = ''
+        challenger_ctl.play_next(self.buttons)
          
     def btn_answer(self,btn_cancel):
+        # TODO: do functionality it in controller via self.screen
         state,feedback = challenger_ctl.answer()
         self.btn_answer_label = state
         self.solution = feedback
@@ -65,6 +61,7 @@ class ChallengerScreen(Screen):
             btn_cancel.active = False
          
     def btn_solution(self):
+        # TODO: check if return values could be updated in controller through self.screen
         self.solution,self.hints = challenger_ctl.show_solution()
     
     def btn_hints(self):
