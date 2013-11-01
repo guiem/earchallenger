@@ -3,7 +3,7 @@
 
 from utils.job import Job
 from utils.abstract_ctl import AbstractController
-from utils.database_manager import DatabaseManager
+from utils.database_manager import EarChallengerDB
 from challenger.challenger_view import ChallengerScreen
 import traceback
 from kivy.logger import Logger
@@ -69,9 +69,9 @@ class ChallengerCtl(AbstractController):
         self.screen.played_times += 1
 
     def play_next(self,buttons):
-        dbmgr = DatabaseManager("earchallenger.db")
-        dbmgr.query('''INSERT INTO stats(num_hints, num_notes, num_trials)
-                    VALUES(%s,%s,%s)''' % (str(self.screen.hints),str(self.num_notes), str(self.screen.played_times)))
+        dbmgr = EarChallengerDB("earchallenger.db")
+        correct = 1 if self._check_answer() else 0
+        dbmgr.insert_stat(correct,self.screen.played_times,self.screen.hints,self.num_notes,'alto_sax','todo:put sequence here',5)
         self.screen.played_times = 1
         self.screen.hints = 0
         self.screen.solution = ''

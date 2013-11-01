@@ -3,7 +3,7 @@
 
 from utils.job import Job
 from utils.abstract_ctl import AbstractController
-from utils.database_manager import DatabaseManager
+from utils.database_manager import EarChallengerDB
 import traceback
 from kivy.logger import Logger
 from kivy.properties import StringProperty, ObjectProperty, ListProperty
@@ -20,9 +20,8 @@ class StatsCtl(AbstractController):
          
     def prepareScreen(self):
         screen = self.screen_manager.get_screen(self.screen_name)
-        dbmgr = DatabaseManager("earchallenger.db")
-        res = dbmgr.query('''SELECT COUNT(*) FROM stats''')
-        screen.num_games = res.fetchone()[0]
+        dbmgr = EarChallengerDB("earchallenger.db")
+        screen.num_games = dbmgr.get_num_games()
 
 stats_ctl = StatsCtl()
 
