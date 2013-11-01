@@ -11,6 +11,7 @@ from glob import glob
 from os.path import dirname, join, basename
 from utils.i18n import _
 from settings.settings_ctl import settings_ctl
+from stats.stats_ctl import stats_ctl
 
 Builder.load_file('challenger/challenger.kv')
 
@@ -48,7 +49,8 @@ class ChallengerScreen(Screen):
         self.played_times += 1
 
     def btn_next(self):
-        challenger_ctl.play_next(self.buttons)
+        challenger_ctl.play_next(self.buttons, self.hints,self.played_times)
+        # TODO: check if there is a correct way to handle this variables in controller
         self.played_times = 1
         self.hints = 0
         self.solution = ''
@@ -73,5 +75,8 @@ class ChallengerScreen(Screen):
 
     def btn_settings(self):
         settings_ctl.showScreen()
+
+    def btn_statistics(self):
+        stats_ctl.showScreen()
 
 from challenger.challenger_ctl import challenger_ctl

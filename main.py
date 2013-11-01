@@ -40,6 +40,8 @@ class MyScreenManager(ScreenManager):
             return None
 
 class EarChallengerApp(App):
+    
+    # TODO: deprecated?
     def get_answer(self):
         return self.answer
          

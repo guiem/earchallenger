@@ -1,0 +1,21 @@
+#:import _ utils.i18n._
+
+<FullImage@Image>:
+    canvas:
+        Color:
+            rgb: (1, 1, 1)
+        Rectangle:
+            texture: self.texture
+            size: self.size
+            pos: self.pos
+
+<StatsScreen>:
+    BoxLayout:
+        orientation:'horizontal'
+        Label:
+            text: _('Total games played: ')
+        Label:
+            text: str(root.num_games)
+        Button:
+            text:_('Back')
+            on_press:root.btn_back()

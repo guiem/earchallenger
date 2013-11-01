@@ -3,6 +3,7 @@
 
 from utils.job import Job
 from utils.abstract_ctl import AbstractController
+from utils.database_manager import DatabaseManager
 from challenger.challenger_view import ChallengerScreen
 import traceback
 from kivy.logger import Logger
@@ -66,7 +67,10 @@ class ChallengerCtl(AbstractController):
         self.job_play_sequence.controller=self
         self.job_play_sequence.start_job(buttons,self.num_notes,self.sequence)
 
-    def play_next(self,buttons):
+    def play_next(self,buttons,hints,played_times):
+        dbmgr = DatabaseManager("earchallenger.db")
+        dbmgr.query('''INSERT INTO stats(num_hints, num_notes, num_trials)
+                    VALUES(%s,%s,%s)''' % (str(hints),str(self.num_notes), str(played_times)))
         self._reset_all(buttons)
         self.job_play_sequence = JobPlaySequence()
         self.job_play_sequence.controller=self
