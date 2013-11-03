@@ -124,11 +124,15 @@ class ChallengerCtl(AbstractController):
         if not hasattr(self, 'screen'):
             self.screen = self.screen_manager.get_screen(self.screen_name)
             self.get_screen().prepare()
-        # TODO: check if right place to do this
-        from kivy.storage.jsonstore import JsonStore
-        store = JsonStore('settings.json')
-        if store:
-            self.change_num_notes(store.get('num_notes')['value'])
+        # TODO: done by sqlite now because storage is not present in Kivy 1.7.2
+        #from kivy.storage.jsonstore import JsonStore
+        #store = JsonStore('settings.json')
+        #if store:
+        #    self.change_num_notes(store.get('num_notes')['value'])
+        dbmgr = EarChallengerDB("earchallenger.db")
+        num_notes = dbmgr.get_setting("num_notes")
+        if num_notes != None:
+            self.change_num_notes(num_notes)
 
     def on_job_finished_play_sequence(self,sender):
         Logger.debug('ChallengerCtl: on_job_finished')

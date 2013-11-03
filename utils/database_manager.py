@@ -25,6 +25,9 @@ class EarChallengerDB(DatabaseManager):
         self.query('''
             CREATE TABLE IF NOT EXISTS stats(id INTEGER PRIMARY KEY, datestamp TEXT,correct INTEGER, num_trials INTEGER, num_hints INTEGER, num_notes INTEGER, instrument TEXT, sequence TEXT, user_rating INTEGER)
             ''')
+        self.query('''
+           CREATE TABLE IF NOT EXISTS settings(id INTEGER PRIMARY KEY, setting TEXT, value TEXT, type TEXT)
+            ''')
         self.conn.commit()
 
     def insert_stat(self,correct,num_trials,num_hints,num_notes,instrument,sequence,user_rating):
@@ -37,3 +40,20 @@ class EarChallengerDB(DatabaseManager):
         res = self.query('''SELECT COUNT(*) FROM stats''')
         return res.fetchone()[0]
 
+    def get_setting(self,setting_name):
+        res = self.query("""SELECT value,type FROM settings WHERE setting = '%s'""" %(setting_name,))
+        fetched = res.fetchone()
+        if fetched:
+            value = fetched[0]
+            type = fetched[1]
+            return eval(type+'('+str(value)+')')
+        return None
+
+    def set_setting(self,setting_name,value,type):
+        res = self.query("""SELECT id FROM settings WHERE setting = '%s'""" %(setting_name,))
+        fetched = res.fetchone()
+        real_value = eval(type+'('+str(value)+')')
+        if fetched:
+            self.query("""UPDATE settings SET value = '%s' WHERE setting = '%s'""" %(real_value,setting_name))
+        else:
+            self.query("""INSERT INTO settings(setting,value,type) VALUES('%s','%s','%s')""" %(setting_name,real_value,type))
