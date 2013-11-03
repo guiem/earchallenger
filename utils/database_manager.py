@@ -16,7 +16,8 @@ class DatabaseManager(object):
         return self.cur
     
     def __del__(self):
-        self.conn.close()
+        if hasattr(self, 'conn'):
+            self.conn.close()
 
 class EarChallengerDB(DatabaseManager):
 
