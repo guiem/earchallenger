@@ -20,7 +20,7 @@ class StatsCtl(AbstractController):
          
     def prepareScreen(self):
         screen = self.screen_manager.get_screen(self.screen_name)
-        dbmgr = EarChallengerDB("earchallenger.db")
+        dbmgr = EarChallengerDB()
         screen.num_games = dbmgr.get_num_games()
 
 stats_ctl = StatsCtl()

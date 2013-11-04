@@ -69,7 +69,7 @@ class ChallengerCtl(AbstractController):
         self.screen.played_times += 1
 
     def play_next(self,buttons):
-        dbmgr = EarChallengerDB("earchallenger.db")
+        dbmgr = EarChallengerDB()
         correct = 1 if self._check_answer() else 0
         dbmgr.insert_stat(correct,self.screen.played_times,self.screen.hints,self.num_notes,'alto_sax','todo:put sequence here',5)
         self.screen.played_times = 1
@@ -129,7 +129,7 @@ class ChallengerCtl(AbstractController):
         #store = JsonStore('settings.json')
         #if store:
         #    self.change_num_notes(store.get('num_notes')['value'])
-        dbmgr = EarChallengerDB("earchallenger.db")
+        dbmgr = EarChallengerDB()
         num_notes = dbmgr.get_setting("num_notes")
         if num_notes != None:
             self.change_num_notes(num_notes)

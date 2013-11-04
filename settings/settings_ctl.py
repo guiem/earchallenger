@@ -26,7 +26,7 @@ class SettingsCtl(AbstractController):
         #store = JsonStore('settings.json')
         #if store:
         #    screen.num_notes_slider.value = store.get('num_notes')['value']
-        dbmgr = EarChallengerDB("earchallenger.db")
+        dbmgr = EarChallengerDB()
         num_notes = dbmgr.get_setting("num_notes")
         if num_notes != None:
             screen.num_notes_slider.value = num_notes
@@ -36,7 +36,7 @@ class SettingsCtl(AbstractController):
         #from kivy.storage.jsonstore import JsonStore
         #store = JsonStore('settings.json')
         #store.put('num_notes',value=num_notes)
-        dbmgr = EarChallengerDB("earchallenger.db")
+        dbmgr = EarChallengerDB()
         dbmgr.set_setting("num_notes",num_notes,'int')
 
     def store_all(self, num_notes):

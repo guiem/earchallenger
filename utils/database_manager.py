@@ -5,7 +5,7 @@ import datetime
 class DatabaseManager(object):
 
     def __init__(self, db):
-        self.conn = sqlite3.connect(db)
+        self.conn = sqlite3.connect(os.path.expanduser(db))
         self.conn.execute('pragma foreign_keys = on')
         self.cur = self.conn.cursor()
         self.conn.commit()
@@ -21,7 +21,9 @@ class DatabaseManager(object):
 
 class EarChallengerDB(DatabaseManager):
 
-    def __init__(self,db):
+    def __init__(self,db = None):
+        if not db:
+            db = "~/Documents/earchallenger.db"
         super(EarChallengerDB, self).__init__(db)
         self.query('''
             CREATE TABLE IF NOT EXISTS stats(id INTEGER PRIMARY KEY, datestamp TEXT,correct INTEGER, num_trials INTEGER, num_hints INTEGER, num_notes INTEGER, instrument TEXT, sequence TEXT, user_rating INTEGER)
