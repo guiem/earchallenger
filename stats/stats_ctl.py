@@ -22,6 +22,8 @@ class StatsCtl(AbstractController):
         screen = self.screen_manager.get_screen(self.screen_name)
         dbmgr = EarChallengerDB()
         screen.num_games = dbmgr.get_num_games()
+        screen.num_won = dbmgr.get_num_won()
+        screen.num_lost = dbmgr.get_num_lost()
 
 stats_ctl = StatsCtl()
 

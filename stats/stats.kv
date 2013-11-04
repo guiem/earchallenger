@@ -12,10 +12,24 @@
 <StatsScreen>:
     BoxLayout:
         orientation:'horizontal'
-        Label:
-            text: _('Total games played: ')
-        Label:
-            text: str(root.num_games)
+        BoxLayout:
+            orientation:'vertical'
+            Label:
+                text: _('Total games played: ')
+            Label:
+                text: str(root.num_games)
+            Label:
+                text: _('Total won: ')
+            Label:
+                text: str(root.num_won)
+            Label:
+                text: _('Total lost: ')
+            Label:
+                text: str(root.num_lost)
+            Label:
+                text: _('Percentile right: ')
+            Label:
+                text: '0' if root.num_games == 0 else str(round(float(root.num_won)/float(root.num_games)*100,2))+' %'
         Button:
             text:_('Back')
             on_press:root.btn_back()

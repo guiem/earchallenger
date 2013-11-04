@@ -38,7 +38,15 @@ class EarChallengerDB(DatabaseManager):
         query = '''INSERT INTO stats(datestamp,correct,num_trials,num_hints, num_notes,instrument,sequence,user_rating)
             VALUES('%s',%s,%s,%s,%s,'%s','%s',%s)''' % (timestamp,str(correct),str(num_trials),str(num_hints),str(num_notes),instrument,sequence,str(user_rating))
         self.query(query)
-
+    
+    def get_num_won(self):
+        res = self.query("""SELECT COUNT(*) FROM stats WHERE correct = 1""")
+        return res.fetchone()[0]
+    
+    def get_num_lost(self):
+        res = self.query("""SELECT COUNT(*) FROM stats WHERE correct = 0""")
+        return res.fetchone()[0]
+    
     def get_num_games(self):
         res = self.query('''SELECT COUNT(*) FROM stats''')
         return res.fetchone()[0]

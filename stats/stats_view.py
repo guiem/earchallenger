@@ -15,6 +15,8 @@ Builder.load_file('stats/stats.kv')
 
 class StatsScreen(Screen):
     num_games = NumericProperty(0)
+    num_won = NumericProperty(0)
+    num_lost = NumericProperty(0)
 
     def btn_back(self):
         from challenger.challenger_ctl import challenger_ctl
