@@ -47,12 +47,12 @@ class ChallengerScreen(Screen):
     def btn_play(self):
         challenger_ctl.play_sequence(self.buttons)
 
-    def btn_next(self):
-        challenger_ctl.play_next(self.buttons)
+    def btn_skip(self):
+        challenger_ctl.next_sequence(self.buttons)
          
     def btn_answer(self,btn_cancel):
         # TODO: do functionality it in controller via self.screen
-        state,feedback = challenger_ctl.answer()
+        state,feedback = challenger_ctl.answer(self.buttons)
         self.btn_answer_label = state
         self.solution = feedback
         if state == _('Submit'):

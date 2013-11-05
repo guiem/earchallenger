@@ -68,24 +68,22 @@ class ChallengerCtl(AbstractController):
         self.job_play_sequence.start_job(buttons,self.num_notes,self.sequence)
         self.screen.played_times += 1
 
-    def play_next(self,buttons):
+    def next_sequence(self,buttons):
         dbmgr = EarChallengerDB()
         correct = 1 if self._check_answer() else 0
         dbmgr.insert_stat(correct,self.screen.played_times,self.screen.hints,self.num_notes,'alto_sax','todo:put sequence here',5)
         self.screen.played_times = 1
         self.screen.hints = 0
-        self.screen.solution = ''
+        # TODO: check feedback not deleted by next sentence after answering
+        self.screen.solution = _('New sequence available, press Play!')
         self._reset_all(buttons)
-        self.job_play_sequence = JobPlaySequence()
-        self.job_play_sequence.controller=self
-        self.job_play_sequence.start_job(buttons,self.num_notes,self.sequence)
     
     def cancel(self,buttons):
         self._clear_buttons(buttons)
         self.submitted = []
         self.sol_count_notes = 0
      
-    def answer(self):
+    def answer(self,buttons):
         btn_label = ''
         feedback = ''
         if self.state == 'normal':
@@ -102,6 +100,7 @@ class ChallengerCtl(AbstractController):
                     feedback = _('Sorry, you are wrong.')
             else:
                 feedback = _('Sorry, you did not play any sequence.')
+            self.next_sequence(buttons)
         return btn_label,feedback
      
     def show_solution(self,num_hints = False):
