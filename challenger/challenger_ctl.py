@@ -72,7 +72,7 @@ class ChallengerCtl(AbstractController):
         dbmgr = EarChallengerDB()
         correct = 1 if self._check_answer() else 0
         dbmgr.insert_stat(correct,self.screen.played_times,self.screen.hints,self.num_notes,'alto_sax','todo:put sequence here',5)
-        self.screen.played_times = 1
+        self.screen.played_times = 0
         self.screen.hints = 0
         # TODO: check feedback not deleted by next sentence after answering
         self.screen.solution = _('New sequence available, press Play!')
