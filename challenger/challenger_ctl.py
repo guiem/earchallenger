@@ -68,15 +68,22 @@ class ChallengerCtl(AbstractController):
         self.job_play_sequence.start_job(buttons,self.num_notes,self.sequence)
         self.screen.played_times += 1
 
-    def next_sequence(self,buttons):
+    def next_sequence(self,buttons,feedback=False):
         dbmgr = EarChallengerDB()
         correct = 1 if self._check_answer() else 0
         dbmgr.insert_stat(correct,self.screen.played_times,self.screen.hints,self.num_notes,'alto_sax','todo:put sequence here',5)
         self.screen.played_times = 0
         self.screen.hints = 0
-        # TODO: check feedback not deleted by next sentence after answering
-        self.screen.solution = _('New sequence available, press Play!')
+        # TODO: show it in a dialog
+        if not feedback:
+            feedback = _('New sequence available, press Play!')
+        self.screen.solution = feedback
         self._reset_all(buttons)
+    
+    def skip(self,buttons):
+        solution = self.get_solution_str()
+        feedback = False if not solution else _('The solution was: %s' %(solution,))
+        self.next_sequence(buttons,feedback=feedback)
     
     def cancel(self,buttons):
         self._clear_buttons(buttons)
@@ -99,25 +106,18 @@ class ChallengerCtl(AbstractController):
                 else:
                     feedback = _('Sorry, you are wrong.')
             else:
-                feedback = _('Sorry, you did not play any sequence.')
+                feedback = _('Sorry, you did not even play any sequence.')
             self.next_sequence(buttons)
         return btn_label,feedback
-     
-    def show_solution(self,num_hints = False):
-        if not num_hints and num_hints != 0:
-            num_hints = self.num_notes - 1
-        num_to_show = num_hints + 1
-        Logger.debug('ShowSolution: num_to_show '+str(num_to_show)+' len_seq '+str(len(self.sequence)))
-        if self.sequence and num_to_show <= len(self.sequence):
-            solution = []
-            for note in self.sequence[:num_to_show]:
-                solution.append(note.text)
-            feedback = (',').join(solution)
-            num_hints += 1
-        else:
-            feedback = _('Nothing has been played yet!')
-            num_hints = 0
-        return feedback,num_hints
+
+    def get_solution_str(self):
+        return (',').join([note.text for note in self.sequence])
+    
+    def show_hint(self):
+        feedback = (',').join([note.text for note in self.sequence[:self.screen.hints+1]])
+        self.screen.solution = feedback
+        if self.screen.hints < len(self.sequence):
+            self.screen.hints += 1
     
     def prepareScreen(self):
         if not hasattr(self, 'screen'):

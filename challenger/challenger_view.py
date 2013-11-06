@@ -37,7 +37,6 @@ class ChallengerScreen(Screen):
     hints = NumericProperty(0)
 
     def prepare(self):
-        Logger.debug('ChallengerScreen: into prepare')
         for fn in glob('resources/instruments/alto_sax/*.wav'): # TODO: find a generic way to address sound directory
             Logger.debug('ChallengerScreen: entro')
             btn = AudioButton(text=basename(fn[:-4]).split('_')[1], filename=fn,size_hint=(1.0,1.0), halign='center', text_size=(None, None)) 
@@ -48,10 +47,10 @@ class ChallengerScreen(Screen):
         challenger_ctl.play_sequence(self.buttons)
 
     def btn_skip(self):
-        challenger_ctl.next_sequence(self.buttons)
+        challenger_ctl.skip(self.buttons)
          
     def btn_answer(self,btn_cancel):
-        # TODO: do functionality it in controller via self.screen
+        # TODO: do functionality in controller via self.screen?
         state,feedback = challenger_ctl.answer(self.buttons)
         self.btn_answer_label = state
         self.solution = feedback
@@ -59,13 +58,9 @@ class ChallengerScreen(Screen):
             btn_cancel.active = True
         elif state == _('Answer'):
             btn_cancel.active = False
-         
-    def btn_solution(self):
-        # TODO: check if return values could be updated in controller through self.screen
-        self.solution,self.hints = challenger_ctl.show_solution()
     
     def btn_hints(self):
-        self.solution,self.hints = challenger_ctl.show_solution(self.hints)
+        challenger_ctl.show_hint()
          
     def btn_cancel(self):
         challenger_ctl.cancel(self.buttons)
