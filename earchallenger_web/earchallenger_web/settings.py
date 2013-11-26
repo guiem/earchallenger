@@ -14,22 +14,15 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-'''DATABASES = {
+DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': os.path.join(PROJECT_PATH, 'web_db.sqlite'), # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
-    }
-}'''
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_PATH, 'database.sqlite'),
     }
 }
 
@@ -77,7 +70,7 @@ STATIC_ROOT = os.path.join(PROJECT_PATH, "static")
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -95,7 +88,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '8&&*yp_3$q7zr2q5k2*)rd^sp7_2r7nschu(@y^p_a_&+)zmmk'
+SECRET_KEY = '$64#y@s-8+g_3elw!u@-$l9j5s#nst=g%8@9506(%jhn6zgx&5'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -105,7 +98,6 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -139,18 +131,18 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'djangocms_admin_style',
+    'djangocms_admin_style', # for the admin skin. You must add 'djangocms_admin_style' in the list before 'django.contrib.admin'.
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'djangocms_text_ckeditor',
     'cms',
-    'cms.stacks',
-    'mptt',
-    'menus',
-    'south',
-    'sekizai',
-    'django.contrib.messages',
+    'cms.stacks', # for reusable content
+    'mptt', # utilities for implementing a modified pre-order traversal tree
+    'menus', # helper for model independent hierarchical website navigation
+    'south', # intelligent schema and data migrations
+    'sekizai', # for javascript and css management
+    'django.contrib.messages', # to enable messages framework (see Enable messages)
+    'earchallenger_web',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -185,19 +177,19 @@ LOGGING = {
 }
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.request',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'cms.context_processors.media',
-    'sekizai.context_processors.sekizai',
+   'django.contrib.auth.context_processors.auth',
+   'django.contrib.messages.context_processors.messages',
+   'django.core.context_processors.i18n',
+   'django.core.context_processors.request',
+   'django.core.context_processors.media',
+   'django.core.context_processors.static',
+   'cms.context_processors.media',
+   'sekizai.context_processors.sekizai',
 )
 
 CMS_TEMPLATES = (
-    ('template_1.html', 'Template One'),
-    ('template_2.html', 'Template Two'),
+    #('template_1.html', 'Template One'),
+    #('template_2.html', 'Template Two'),
 )
 
 LANGUAGES = [

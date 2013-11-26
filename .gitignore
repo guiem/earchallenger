@@ -2,3 +2,5 @@ resources/instruments/alto_sax/raw
 resources/instruments/alto_sax/old
 settings.json
 earchallenger.db
+ENV
+earchallenger_web/web_db.sqlite
