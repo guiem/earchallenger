@@ -3,4 +3,4 @@ resources/instruments/alto_sax/old
 settings.json
 earchallenger.db
 ENV
-earchallenger_web/web_db.sqlite
+earchallenger_web/earchallenger_web/settings_local.py
