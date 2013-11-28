@@ -29,7 +29,7 @@ class EarChallengerDB(DatabaseManager):
             CREATE TABLE IF NOT EXISTS stats(id INTEGER PRIMARY KEY, datestamp TEXT,correct INTEGER, num_trials INTEGER, num_hints INTEGER, num_notes INTEGER, instrument TEXT, sequence TEXT, user_rating INTEGER)
             ''')
         self.query('''
-           CREATE TABLE IF NOT EXISTS settings(id INTEGER PRIMARY KEY, setting TEXT, value TEXT, type TEXT)
+           CREATE TABLE IF NOT EXISTS settings(id INTEGER PRIMARY KEY, setting TEXT, value TEXT, type TEXT, last_remote_update TEXT)
             ''')
         self.conn.commit()
 
@@ -68,3 +68,17 @@ class EarChallengerDB(DatabaseManager):
             self.query("""UPDATE settings SET value = '%s' WHERE setting = '%s'""" %(real_value,setting_name))
         else:
             self.query("""INSERT INTO settings(setting,value,type) VALUES('%s','%s','%s')""" %(setting_name,real_value,type))
+
+    def _after_remote_update(self,timestamp):
+        timestamp = timestamp or ''
+        res = self.query("""SELECT * FROM stats WHERE DATETIME(stats.datestamp) > '%s'""" % (timestamp,))
+        return res.fetchall()
+
+    def async_remote_update(self):
+        last_sync = get_setting('last_remote_update')
+        to_sync = self._after_remote_update(last_sync)
+        # TODO: insert here all results to remote db
+        new_sync = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        set_setting('last_remote_update',new_sync,'str')
+
+

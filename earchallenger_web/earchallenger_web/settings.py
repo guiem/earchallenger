@@ -142,7 +142,6 @@ INSTALLED_APPS = (
     'south', # intelligent schema and data migrations
     'sekizai', # for javascript and css management
     'django.contrib.messages', # to enable messages framework (see Enable messages)
-    'polymorphic', # We need polymorphic installed for the shop
     'earchallenger_web',
 )
 
