@@ -142,6 +142,7 @@ INSTALLED_APPS = (
     'south', # intelligent schema and data migrations
     'sekizai', # for javascript and css management
     'django.contrib.messages', # to enable messages framework (see Enable messages)
+    'polymorphic', # We need polymorphic installed for the shop
     'earchallenger_web',
 )
 
@@ -196,6 +197,8 @@ LANGUAGES = [
     ('en', 'English'),
     ('es', 'Spanish'),
 ]
+
+#AUTH_PROFILE_MODULE = 'earchallenger_web.UserProfile'
 
 try:
     from settings_local import *
